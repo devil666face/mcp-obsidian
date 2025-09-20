@@ -23,6 +23,7 @@ The server implements multiple tools to interact with Obsidian:
 Its good to first instruct Claude to use Obsidian. Then it will always call the tool.
 
 The use prompts like this:
+
 - Get the contents of the last architecture call note and summarize them
 - Search for all files where Azure CosmosDb is mentioned and quickly explain to me the context in which it is mentioned
 - Summarize the last meeting notes and put them into a new note 'summary meeting.md'. Add an introduction so that I can send it via email.
@@ -31,17 +32,15 @@ The use prompts like this:
 
 ### Obsidian REST API Key
 
-There are two ways to configure the environment with the Obsidian REST API Key. 
+There are two ways to configure the environment with the Obsidian REST API Key.
 
 1. Add to server config (preferred)
 
 ```json
 {
   "mcp-obsidian": {
-    "command": "uvx",
-    "args": [
-      "mcp-obsidian"
-    ],
+    "command": "mcp-obsidian",
+    "args": [],
     "env": {
       "OBSIDIAN_API_KEY": "<your_api_key_here>",
       "OBSIDIAN_HOST": "<your_obsidian_host>",
@@ -50,6 +49,25 @@ There are two ways to configure the environment with the Obsidian REST API Key.
   }
 }
 ```
+
+Config for [crush](https://github.com/charmbracelet/crush)
+
+```json
+{
+  "$schema": "https://charm.land/crush.json",
+  "mcp": {
+    "obsidian": {
+      "type": "stdio",
+      "command": "mcp-obsidian",
+      "args": [],
+      "env": {
+        "OBSIDIAN_API_KEY": "****************************************************************"
+      }
+    }
+  }
+}
+```
+
 Sometimes Claude has issues detecting the location of uv / uvx. You can use `which uvx` to find and paste the full path in above config in such cases.
 
 2. Create a `.env` file in the working directory with the following required variables:
@@ -61,6 +79,7 @@ OBSIDIAN_PORT=your_obsidian_port
 ```
 
 Note:
+
 - You can find the API key in the Obsidian plugin config
 - Default port is 27124 if not specified
 - Default host is 127.0.0.1 if not specified
@@ -135,6 +154,7 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 To prepare the package for distribution:
 
 1. Sync dependencies and update lockfile:
+
 ```bash
 uv sync
 ```
