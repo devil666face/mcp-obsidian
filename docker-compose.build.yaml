@@ -1,0 +1,11 @@
+services:
+  mcp-obsidian-build:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    image: mcp-obsidian-build:latest
+    volumes:
+      - ./bin:/build/bin
+      - ./.cache/Nuitka:/root/.cache/Nuitka
+    container_name: mcp-obsidian-build
+    network_mode: bridge

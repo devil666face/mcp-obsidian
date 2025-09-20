@@ -1,0 +1,30 @@
+version: "3"
+
+env:
+  COMPOSE_BAKE: true
+
+tasks:
+  build:
+    desc: build via nuitka in one bin
+    cmds:
+      - |
+        uv run -m nuitka \
+        --onefile \
+        --standalone \
+        --follow-imports \
+        --assume-yes-for-downloads \
+        mcp_obsidian/main.py
+
+  build.in.docker:
+    desc: not use this command (it only for use in docker)
+    deps:
+      - build
+    cmds:
+      - rm -rf /build/bin/*
+      - mv main.* /build/bin
+      - cp /build/bin/main.bin /build/bin/mcp-obsidian
+
+  build.docker:
+    desc: build via docker
+    cmds:
+      - docker compose -f docker-compose.build.yaml up --build --force-recreate
